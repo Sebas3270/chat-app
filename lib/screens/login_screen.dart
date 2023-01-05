@@ -1,180 +1,188 @@
-import 'package:chat_app/widgets/login_input.dart';
+
+import 'package:chat_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LogInScreen extends StatelessWidget {
 
+
   @override
   Widget build(BuildContext context) {
 
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.dark,
+    ));
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-
-            const TopImageContainer(),
-
+      
+            LogCredentialHeader(isLogin: true,),
+      
+            const SizedBox(
+              height: 30,
+            ),
+      
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Login',
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.w700),
-                      ),
-                    ],
+      
+                  LogInInput(
+                    label: 'Email', 
+                    hintText: '', 
+                    icon: Icons.email_rounded, 
+                    isPassword: false, 
+                    txtController: emailController
                   ),
-
+      
                   const SizedBox(
                     height: 20,
                   ),
-
-                  Column(
-                    children: [
-                      LogInInput(
-                        label: 'Email', 
-                        hintText: 'example@gmail.com', 
-                        icon: Icons.email_rounded, 
-                        isPassword: false, 
-                        txtController: emailController
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      LogInInput(
-                        label: 'Password', 
-                        hintText: '********', 
-                        icon: Icons.lock, 
-                        isPassword: true, 
-                        txtController: passwordController
-                      ),
-
-                      SizedBox(
-                        height: 20,
-                      ),
-
-                      LoginButton(
-                        isLogin: true,
-                        onTapFunction: () {
-                          print('Hi');
-                        },
-                      ),
-
-                      
-                    ],
+      
+                  LogInInput(
+                    label: 'Password', 
+                    hintText: '', 
+                    icon: Icons.lock, 
+                    isPassword: true, 
+                    txtController: passwordController
                   ),
+      
+                  SizedBox(
+                    height: 30,
+                  ),
+      
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[900],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // <-- Radius
+                      ),
+                    ),
+                    onPressed: () {
+                      
+                    },
+                    child: const SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: Center(
+                        child: Text('Log In',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          ),
+                        )
+                      )
+                    )
+                  ),
+
+                  LogRegisterLabels(
+                    isLogin: true,
+                    route: 'register',
+                  ),
+
                 ],
               ),
             ),
-
-            SizedBox(height: 40,),
-
-            LogInRegisterLabels(route: 'register', isLogin: true,),
+            
           ],
+        
         ),
       ),
-    );
+   );
   }
 }
 
-class LogInRegisterLabels extends StatelessWidget {
+class LogRegisterLabels extends StatelessWidget {
 
-  final bool isLogin;
-  final String route;
+  bool isLogin;
+  String route;
 
-  LogInRegisterLabels({
+  LogRegisterLabels({
     Key? key,
-    required this.route,
-    required this.isLogin
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(isLogin ? 'Dont you have an account?' : 'Already an account?', 
-          style: TextStyle(
-            fontSize: 17,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => Navigator.of(context).pushReplacementNamed(route),
-          child: Text(isLogin ? 'Register here' : 'Log In here', 
-            style: TextStyle(
-              fontSize: 17,
-              color: Theme.of(context).primaryColor
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class TopImageContainer extends StatelessWidget {
-  const TopImageContainer({
-    Key? key,
+    required this.isLogin,
+    required this.route
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image:AssetImage('assets/login.jpg'),
-          fit: BoxFit.cover,
-          alignment: AlignmentDirectional.centerStart,
-          colorFilter: ColorFilter.mode(Color.fromARGB(255, 0, 0, 0).withOpacity(0.6), BlendMode.darken),
-        ),
+      margin: const EdgeInsets.only(top: 40),
+      child: Column(
+        children: [
+          Text( isLogin ? 'Dont you have an account?' : 'Do you already have an account?'),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pushReplacementNamed(route),
+            child: Text( isLogin ? 'Register now for free' : 'Log in now',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class LoginButton extends StatelessWidget {
-  void Function() onTapFunction;
-  final bool isLogin;
+class LogCredentialHeader extends StatelessWidget {
 
-  LoginButton({
+  bool isLogin;
+
+  LogCredentialHeader({
     Key? key,
-    required this.onTapFunction,
-    required this.isLogin
+    required this.isLogin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTapFunction,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        child: Container(
-          height: 55,
+    return Stack(
+      children: [
+        SizedBox(
+          height: 250,
           width: double.infinity,
-          color: Theme.of(context).primaryColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                isLogin ? 'Log In' : 'Register',
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20),
-              ),
-            ],
+          child: CustomPaint(
+            painter: WaveHeader(),
           ),
         ),
-      ),
+      
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: SafeArea(
+            child:SizedBox(
+              height: 200,
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isLogin ? 'Welcome back' : 'Register',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white
+                    ),
+                  ),
+                  Text(
+                    isLogin ? 'Enter your credentials to chat' : 'Create an account to start the chat',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      color: Color.fromARGB(255, 194, 194, 194),
+                      fontWeight: FontWeight.w700
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
+

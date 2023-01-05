@@ -5,7 +5,7 @@ class ChatAppTheme {
   static final lightTheme = ThemeData(
     fontFamily: 'DmSans',
     scaffoldBackgroundColor: Colors.white,
-    primaryColor: Color(0xFF0165ff),
+    primaryColor: Colors.blue[900],
   );
 
   static final darkTheme = ThemeData.dark().copyWith(

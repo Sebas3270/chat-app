@@ -9,6 +9,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    TextEditingController nameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
@@ -20,25 +21,14 @@ class RegisterScreen extends StatelessWidget {
         child: Column(
           children: [
 
-            const TopImageContainer(),
+            LogCredentialHeader(
+              isLogin: false,
+            ),
 
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
                 children: [
-                  Row(
-                    children: const [
-                      Text(
-                        'Register',
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
 
                   Column(
                     children: [
@@ -47,7 +37,7 @@ class RegisterScreen extends StatelessWidget {
                         hintText: 'Sebastian Alvarez', 
                         icon: Icons.person, 
                         isPassword: false, 
-                        txtController: emailController
+                        txtController: nameController
                       ),
                       SizedBox(
                         height: 20,
@@ -57,6 +47,7 @@ class RegisterScreen extends StatelessWidget {
                         hintText: 'example@gmail.com', 
                         icon: Icons.email_rounded, 
                         isPassword: false, 
+                        inputType: TextInputType.emailAddress,
                         txtController: emailController
                       ),
                       SizedBox(
@@ -74,12 +65,29 @@ class RegisterScreen extends StatelessWidget {
                         height: 20,
                       ),
 
-                      LoginButton(
-                        isLogin: false,
-                        onTapFunction: () {
-                          print('Hi');
-                        },
+                      ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[900],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // <-- Radius
                       ),
+                    ),
+                    onPressed: () {
+                      
+                    },
+                    child: const SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: Center(
+                        child: Text('Register',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          ),
+                        )
+                      )
+                    )
+                  ),
 
                       
                     ],
@@ -89,7 +97,7 @@ class RegisterScreen extends StatelessWidget {
             ),
 
 
-            LogInRegisterLabels(route: 'login', isLogin: false,),
+            LogRegisterLabels(route: 'login', isLogin: false,),
           ],
         ),
       ),
