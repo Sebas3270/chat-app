@@ -1,11 +1,17 @@
 
+import 'package:chat_app/services/services.dart';
 import 'package:chat_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
 
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
 
+class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
 
@@ -15,6 +21,8 @@ class LogInScreen extends StatelessWidget {
 
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+
+    final authService= Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -37,7 +45,8 @@ class LogInScreen extends StatelessWidget {
                     hintText: '', 
                     icon: Icons.email_rounded, 
                     isPassword: false, 
-                    txtController: emailController
+                    txtController: emailController,
+                    inputType: TextInputType.emailAddress,
                   ),
       
                   const SizedBox(
@@ -63,8 +72,22 @@ class LogInScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10), // <-- Radius
                       ),
                     ),
-                    onPressed: () {
-                      
+                    onPressed: authService.authenticating ? null : () async{
+                      FocusScope.of(context).unfocus();
+                      final login = await authService.login(
+                        emailController.text.trim(), 
+                        passwordController.text.trim()
+                      );
+
+                      if(login){
+                        Navigator.of(context).pushReplacementNamed('users');
+                      }else{
+                        showAlert(
+                          context, 
+                          'Login Failed', 
+                          'Check your email and password again.'
+                        );
+                      }
                     },
                     child: const SizedBox(
                       width: double.infinity,
