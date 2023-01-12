@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthService(),)
+        ChangeNotifierProvider(create: (context) => AuthService(),),
+        ChangeNotifierProvider(create: (context) => SocketService(),),
+        ChangeNotifierProvider(create: (context) => ChatService(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,5 +1,8 @@
+import 'package:chat_app/models/models.dart';
+import 'package:chat_app/services/services.dart';
 import 'package:chat_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class ChatScreen extends StatefulWidget {
@@ -14,17 +17,65 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
   final _focusNode = FocusNode();
   bool _isWriting = false;
 
-  List<ChatMessage> _messages = [
-    // ChatMessage(uuid: '1', text: 'Hi, I miss you'),
-    // ChatMessage(uuid: '2', text: 'Hi, I miss you more'),
-    // ChatMessage(uuid: '2', text: 'Hi, I miss you'),
-    // ChatMessage(uuid: '2', text: 'Hi, I miss you more'),
-    // ChatMessage(uuid: '1', text: 'Hi, I miss you'),
-    // ChatMessage(uuid: '2', text: 'Hi, I miss you more'),
-  ];
+  List<ChatMessage> _messages = [];
+
+  late ChatService chatService;
+  late SocketService socketService;
+  late AuthService authService;
+
+  @override
+  void initState() {
+    super.initState();
+
+    chatService = Provider.of<ChatService>(context, listen: false); 
+    socketService = Provider.of<SocketService>(context, listen: false);  
+    authService = Provider.of<AuthService>(context, listen: false); 
+
+    socketService.socket.on('private-message', _onReceivedMessage);
+
+    _loadPreviousMessages(chatService.userTo.id);
+
+  }
+
+  Future _loadPreviousMessages( String userId ) async {
+    List<Message> messages = await chatService.getChat(userId);
+    
+    final previousMessages = messages.map((message) => ChatMessage(
+      id: message.from, 
+      message: message.message, 
+      animationController: AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 400),
+      )..forward(),
+    )).toList();
+
+    setState(() {
+      _messages.insertAll(0, previousMessages);
+    });
+  }
+
+  void _onReceivedMessage( dynamic data ){
+    print('Got a message: $data');
+
+    final message = ChatMessage(
+      id: data['from'], 
+      message: data['message'], 
+      animationController: AnimationController(
+        vsync: this,
+        duration: const Duration( milliseconds: 300)
+      ),
+    );
+
+    setState(() {
+      _messages.insert(0, message);
+    });
+
+    message.animationController.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -32,15 +83,20 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80'),
+              // backgroundImage: NetworkImage('https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80'),
+              child: Text(chatService.userTo.name.substring(0,2)),
             ),
             SizedBox(width: 20),
-            Text('Melisa'),
+            Text(chatService.userTo.name),
           ],
         ),
         leading: IconButton(
           onPressed: () {
-            
+            if( Navigator.of(context).canPop() ){
+              Navigator.of(context).pop();
+            }else{
+              Navigator.of(context).pushNamed('users');
+            }
           }, 
           icon: Icon(Icons.arrow_back_ios_rounded),
         ),
@@ -60,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
               height: 1,
             ),
 
-            Container(
+            SizedBox(
               height: 70,
               child: _chatTextBox(),
             )
@@ -80,8 +136,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
     _focusNode.requestFocus();
 
     final newMessage = ChatMessage(
-      uuid: '1', 
-      text: value, 
+      id: authService.user.id, 
+      message: value, 
       animationController: AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -94,6 +150,13 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
     setState(() {
       _isWriting = false;
     });
+
+    socketService.socket.emit('private-message', {
+      'from': authService.user.id,
+      'to': chatService.userTo.id,
+      'message': value
+    });
+
   }
 
   Widget _chatTextBox() {
@@ -111,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
                     _isWriting = value.trim().isNotEmpty;
                   });
                 },
-                decoration: InputDecoration.collapsed(
+                decoration: const InputDecoration.collapsed(
                   hintText: 'Send message'
                 ),
               ),
@@ -133,12 +196,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
 
   @override
   void dispose() {
-    // TODO: socket off
 
     for(ChatMessage message in _messages){
       message.animationController.dispose();
     }
 
+    socketService.socket.off('private-message');
     super.dispose();
   }
 }

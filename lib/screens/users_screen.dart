@@ -1,7 +1,7 @@
-import 'package:chat_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:chat_app/services/services.dart';
 import 'package:chat_app/models/user.dart';
 
 
@@ -14,18 +14,21 @@ class UsersScreen extends StatefulWidget {
 class _UsersScreenState extends State<UsersScreen> {
 
   final _refreshController = RefreshController(initialRefresh: false);
+  final usersService = UsersService();
 
-  final users = [
-    // User(id: '1', name: 'David', email: 'example@gmail.com', online: true, ),
-    // User(id: '2', name: 'Carlos', email: 'example2@gmail.com', online: true),
-    // User(id: '3', name: 'Alexis', email: 'example3@gmail.com', online: false),
-  ];
+  List<User> users = [];
 
+  @override
+  void initState() {
+    _loadUsers();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,6 +39,7 @@ class _UsersScreenState extends State<UsersScreen> {
           onPressed: () async {
             final authService = Provider.of<AuthService>(context, listen: false);
             await authService.logOut();
+            socketService.disconnect();
             Navigator.pushReplacementNamed(context, 'login');
           },
           icon: Icon(Icons.exit_to_app)
@@ -63,8 +67,8 @@ class _UsersScreenState extends State<UsersScreen> {
   }
 
   _loadUsers() async{
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+    users = await usersService.getUsers();
+    setState((){});
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
@@ -79,10 +83,15 @@ class _UsersScreenState extends State<UsersScreen> {
 
   ListTile userListTile(User user) {
     return ListTile(
-          title: Text(user.name),
-          leading: CircleAvatar(
-            child: Text(user.name.substring(0,2)),
-          ),
-        );
+      title: Text(user.name),
+      leading: CircleAvatar(
+        child: Text(user.name.substring(0,2)),
+      ),
+      onTap: () {
+        final chatService = Provider.of<ChatService>(context, listen: false);
+        chatService.userTo = user;
+        Navigator.of(context).pushNamed('chat');
+      },
+    );
   }
 }

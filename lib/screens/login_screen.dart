@@ -22,7 +22,8 @@ class _LogInScreenState extends State<LogInScreen> {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    final authService= Provider.of<AuthService>(context, listen: false);
+    final authService= Provider.of<AuthService>(context);
+    final socketService= Provider.of<SocketService>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -80,6 +81,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       );
 
                       if(login){
+                        socketService.connect();
                         Navigator.of(context).pushReplacementNamed('users');
                       }else{
                         showAlert(

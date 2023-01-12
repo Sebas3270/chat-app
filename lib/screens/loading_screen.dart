@@ -20,9 +20,11 @@ class LoadingScreen extends StatelessWidget {
   Future checkLogInState(BuildContext context) async {
     
     final authService = Provider.of<AuthService>(context, listen: false);
+    final socketService= Provider.of<SocketService>(context, listen: false);
     final authenticated = await authService.isLogged();
 
     if(authenticated){
+      socketService.connect();
       Navigator.pushReplacementNamed(context, 'users');
     }else{
       Navigator.pushReplacementNamed(context, 'login');

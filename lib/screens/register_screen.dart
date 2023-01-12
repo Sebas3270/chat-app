@@ -18,6 +18,7 @@ class RegisterScreen extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     final authService= Provider.of<AuthService>(context, listen: false);
+    final socketService = Provider.of<SocketService>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -85,6 +86,7 @@ class RegisterScreen extends StatelessWidget {
                           );
 
                           if(register.isEmpty){
+                            socketService.connect();
                             Navigator.of(context).pushReplacementNamed('users');
                           }else{
                             showAlert(
