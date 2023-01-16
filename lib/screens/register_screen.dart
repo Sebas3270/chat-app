@@ -44,7 +44,7 @@ class RegisterScreen extends StatelessWidget {
                         isPassword: false, 
                         txtController: nameController
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       LogInInput(
@@ -55,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
                         inputType: TextInputType.emailAddress,
                         txtController: emailController
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       LogInInput(
@@ -66,7 +66,7 @@ class RegisterScreen extends StatelessWidget {
                         txtController: passwordController
                       ),
 
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
 

@@ -4,24 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ChatAppTheme(),),
+        ChangeNotifierProvider(create: (context) => AuthService(),),
+        ChangeNotifierProvider(create: (context) => SocketService(),),
+        ChangeNotifierProvider(create: (context) => ChatService(),),
+        ChangeNotifierProvider(create: (context) => ScreenService(),),
+      ],
+      child: MyApp(),
+  )
+);
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => AuthService(),),
-        ChangeNotifierProvider(create: (context) => SocketService(),),
-        ChangeNotifierProvider(create: (context) => ChatService(),),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Material App',
-        initialRoute: 'loading',
-        routes: appRoues,
-        theme: ChatAppTheme.lightTheme,
-      ),
+
+    final chatAppTheme = Provider.of<ChatAppTheme>(context);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: chatAppTheme.currentTheme,
+      title: 'Material App',
+      initialRoute: 'loading',
+      routes: appRoues,
     );
   }
 }

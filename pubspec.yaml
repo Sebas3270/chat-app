@@ -41,6 +41,8 @@ dependencies:
   http: ^0.13.5
   flutter_secure_storage: ^7.0.1
   socket_io_client: ^2.0.1
+  fluentui_icons: ^1.0.0
+  shared_preferences: ^2.0.16
 
 dev_dependencies:
   flutter_test:

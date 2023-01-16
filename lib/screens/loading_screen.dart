@@ -24,10 +24,12 @@ class LoadingScreen extends StatelessWidget {
     final authenticated = await authService.isLogged();
 
     if(authenticated){
+      // await getStoredTheme(context);
       socketService.connect();
       Navigator.pushReplacementNamed(context, 'users');
     }else{
       Navigator.pushReplacementNamed(context, 'login');
     }
   }
+
 }

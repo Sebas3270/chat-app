@@ -1,4 +1,5 @@
 import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,13 +46,13 @@ class _ChatMessageState extends State<ChatMessage> {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black87,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        padding: const EdgeInsets.all(9),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         margin: const EdgeInsets.only(
-          right: 7,
+          right: 12,
           bottom: 5,
           left: 60
         ),
@@ -67,16 +68,19 @@ class _ChatMessageState extends State<ChatMessage> {
   }
 
   Widget _receivedMessage(){
+
+    final chatAppTheme = Provider.of<ChatAppTheme>(context);
+
      return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 215, 215, 215),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        decoration: BoxDecoration(
+          color: chatAppTheme.isDarkMode ? Colors.white12 : const Color.fromARGB(255, 215, 215, 215),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        padding: const EdgeInsets.all(9),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         margin: const EdgeInsets.only(
-          left: 7,
+          left: 12,
           bottom: 5,
           right: 60
         ),

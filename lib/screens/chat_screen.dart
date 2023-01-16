@@ -1,6 +1,7 @@
 import 'package:chat_app/models/models.dart';
 import 'package:chat_app/services/services.dart';
 import 'package:chat_app/widgets/widgets.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
   final _focusNode = FocusNode();
   bool _isWriting = false;
 
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
   late ChatService chatService;
   late SocketService socketService;
@@ -78,16 +79,38 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 70,
         elevation: 0,
-        backgroundColor: Colors.black87,
         title: Row(
           children: [
             CircleAvatar(
               // backgroundImage: NetworkImage('https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80'),
               child: Text(chatService.userTo.name.substring(0,2)),
             ),
-            SizedBox(width: 20),
-            Text(chatService.userTo.name),
+            const SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  chatService.userTo.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    // color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16
+                  ),
+                ),
+                Text(
+                  chatService.userTo.online ? 'Online' : 'Offline',
+                  style: const TextStyle(
+                    // color: Colors.black45,
+                    fontSize: 14
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         leading: IconButton(
@@ -98,7 +121,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
               Navigator.of(context).pushNamed('users');
             }
           }, 
-          icon: Icon(Icons.arrow_back_ios_rounded),
+          icon: const Icon(
+            FluentSystemIcons.ic_fluent_chevron_left_filled,
+            // color: Colors.black54,
+          ),
         ),
       ),
       body: Container(
@@ -112,7 +138,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
               ),
             ),
 
-            Divider(
+            const Divider(
               height: 1,
             ),
 
@@ -183,7 +209,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
             IconButton(
               splashColor: Colors.transparent,  
               highlightColor: Colors.transparent,
-              icon: Icon(Icons.send),
+              icon: const Icon(Icons.send),
               onPressed: _isWriting
                 ? () => _handleSubmit( _chatTextController.text.trim() )
                 : null

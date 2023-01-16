@@ -78,7 +78,7 @@ class LogInInput extends StatelessWidget {
   //     );
 
 
-  final Color primary = Color.fromARGB(255, 193, 193, 193);
+  final Color primary = const Color.fromARGB(255, 193, 193, 193);
   InputDecoration inputDecoration(
       String label, String hintText, IconData icon) {
       return InputDecoration(
@@ -88,7 +88,7 @@ class LogInInput extends StatelessWidget {
         prefixIcon: Icon(
           icon,
         ),
-        floatingLabelStyle: TextStyle(
+        floatingLabelStyle: const TextStyle(
           color: Color(0xFF0165ff),
           // fontWeight: FontWeight.w600
         ),
@@ -97,14 +97,14 @@ class LogInInput extends StatelessWidget {
           // fontWeight: FontWeight.w600
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: primary, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primary, width: 1.5),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           // borderSide: BorderSide(color: Color(0xFF0165ff), width: 1.5),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),

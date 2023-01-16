@@ -62,7 +62,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     txtController: passwordController
                   ),
       
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
       

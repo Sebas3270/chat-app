@@ -1,3 +1,5 @@
+import 'package:chat_app/screens/screens.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -29,41 +31,65 @@ class _UsersScreenState extends State<UsersScreen> {
 
     final authService = Provider.of<AuthService>(context);
     final socketService = Provider.of<SocketService>(context);
+    final screenService = Provider.of<ScreenService>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(authService.user.name),
-        elevation: 0,
-        // backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () async {
-            final authService = Provider.of<AuthService>(context, listen: false);
-            await authService.logOut();
-            socketService.disconnect();
-            Navigator.pushReplacementNamed(context, 'login');
-          },
-          icon: Icon(Icons.exit_to_app)
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              
-            },
-            icon: Icon(Icons.check_circle)
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 100,
+          title: IndexedStack(
+            index: screenService.currentIndex,
+            children: const [
+              TopBarUserChats(),
+              TopBarProfile()
+            ],
           ),
-        ],
-      ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        header: WaterDropHeader(
-          complete: Icon(Icons.check, color: Theme.of(context).primaryColor,),
-          waterDropColor: Theme.of(context).primaryColor,
+          elevation: 0,
         ),
-        onRefresh: _loadUsers,
-        child: _listViewUsers(),
-      )
-   );
+        body: IndexedStack(
+          index: screenService.currentIndex,
+          children: [
+            SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: true,
+              header: WaterDropHeader(
+                complete: Icon(Icons.check, color: Theme.of(context).primaryColor,),
+                waterDropColor: Theme.of(context).primaryColor,
+              ),
+              onRefresh: _loadUsers,
+              child: _listViewUsers(),
+            ),
+    
+            ProfileScreen()
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          iconSize: 30,
+          currentIndex: screenService.currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                FluentSystemIcons.ic_fluent_chat_regular,
+              ),
+              // activeIcon: Icon(FluentSystemIcons.ic_fluent_chat_filled),
+              label: 'Chat'
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FluentSystemIcons.ic_fluent_person_regular),
+              // activeIcon: Icon(FluentSystemIcons.ic_fluent_person_filled),
+              label: 'Home'
+            ),
+          ],
+          onTap: (value) {
+            screenService.currentIndex = value;
+          },
+        ),
+       ),
+    );
   }
 
   _loadUsers() async{
@@ -84,7 +110,23 @@ class _UsersScreenState extends State<UsersScreen> {
   ListTile userListTile(User user) {
     return ListTile(
       title: Text(user.name),
-      leading: CircleAvatar(
+      leading: user.online 
+      ? Stack(
+        children: [
+          CircleAvatar(
+            child: Text(user.name.substring(0,2)),
+          ),
+          const Positioned(
+            top: 0,
+            left: 0,
+            child: CircleAvatar(
+              radius: 6,
+              backgroundColor: Colors.green,
+            ),
+          ),
+        ],
+      )
+      : CircleAvatar(
         child: Text(user.name.substring(0,2)),
       ),
       onTap: () {
@@ -92,6 +134,36 @@ class _UsersScreenState extends State<UsersScreen> {
         chatService.userTo = user;
         Navigator.of(context).pushNamed('chat');
       },
+    );
+  }
+}
+
+class TopBarUserChats extends StatelessWidget {
+  
+  const TopBarUserChats({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'Messages',
+          style: TextStyle(
+            fontSize: 33,
+            // color: Colors.black,
+            fontWeight: FontWeight.w700
+          ),
+        ),
+        CircleAvatar(
+          child: Text(authService.user.name.substring(0,2)),
+        )
+      ],
     );
   }
 }
