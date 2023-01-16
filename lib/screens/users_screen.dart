@@ -33,63 +33,61 @@ class _UsersScreenState extends State<UsersScreen> {
     final socketService = Provider.of<SocketService>(context);
     final screenService = Provider.of<ScreenService>(context);
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 100,
-          title: IndexedStack(
-            index: screenService.currentIndex,
-            children: const [
-              TopBarUserChats(),
-              TopBarProfile()
-            ],
-          ),
-          elevation: 0,
-        ),
-        body: IndexedStack(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 100,
+        title: IndexedStack(
           index: screenService.currentIndex,
-          children: [
-            SmartRefresher(
-              controller: _refreshController,
-              enablePullDown: true,
-              header: WaterDropHeader(
-                complete: Icon(Icons.check, color: Theme.of(context).primaryColor,),
-                waterDropColor: Theme.of(context).primaryColor,
-              ),
-              onRefresh: _loadUsers,
-              child: _listViewUsers(),
+          children: const [
+            TopBarUserChats(),
+            TopBarProfile()
+          ],
+        ),
+        elevation: 0,
+      ),
+      body: IndexedStack(
+        index: screenService.currentIndex,
+        children: [
+          SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            header: WaterDropHeader(
+              complete: Icon(Icons.check, color: Theme.of(context).primaryColor,),
+              waterDropColor: Theme.of(context).primaryColor,
             ),
+            onRefresh: _loadUsers,
+            child: _listViewUsers(),
+          ),
     
-            ProfileScreen()
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 0,
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
-          iconSize: 30,
-          currentIndex: screenService.currentIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                FluentSystemIcons.ic_fluent_chat_regular,
-              ),
-              // activeIcon: Icon(FluentSystemIcons.ic_fluent_chat_filled),
-              label: 'Chat'
+          ProfileScreen()
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
+        showUnselectedLabels: false,
+        showSelectedLabels: false,
+        iconSize: 30,
+        currentIndex: screenService.currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              FluentSystemIcons.ic_fluent_chat_regular,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(FluentSystemIcons.ic_fluent_person_regular),
-              // activeIcon: Icon(FluentSystemIcons.ic_fluent_person_filled),
-              label: 'Home'
-            ),
-          ],
-          onTap: (value) {
-            screenService.currentIndex = value;
-          },
-        ),
-       ),
-    );
+            // activeIcon: Icon(FluentSystemIcons.ic_fluent_chat_filled),
+            label: 'Chat'
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FluentSystemIcons.ic_fluent_person_regular),
+            // activeIcon: Icon(FluentSystemIcons.ic_fluent_person_filled),
+            label: 'Home'
+          ),
+        ],
+        onTap: (value) {
+          screenService.currentIndex = value;
+        },
+      ),
+     );
   }
 
   _loadUsers() async{
