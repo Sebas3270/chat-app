@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_app/services/services.dart';
 import 'package:chat_app/theme/theme.dart';
+import 'package:chat_app/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -131,9 +132,7 @@ class TopBarProfile extends StatelessWidget {
             fontWeight: FontWeight.w700
           ),
         ),
-        CircleAvatar(
-          child: Text(authService.user.name.substring(0,2)),
-        )
+        UserImage(user: authService.user)
       ],
     );
   }

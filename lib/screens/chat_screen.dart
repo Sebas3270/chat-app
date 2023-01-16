@@ -83,10 +83,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin  
         elevation: 0,
         title: Row(
           children: [
-            CircleAvatar(
-              // backgroundImage: NetworkImage('https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80'),
-              child: Text(chatService.userTo.name.substring(0,2)),
-            ),
+            UserImage(user: chatService.userTo),
             const SizedBox(width: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

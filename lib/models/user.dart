@@ -6,12 +6,14 @@ class User {
         required this.name,
         required this.email,
         required this.online,
+        this.image
     });
 
     String id;
     String name;
     String email;
     bool online;
+    String? image;
 
     factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
@@ -22,6 +24,7 @@ class User {
         name: json["name"],
         email: json["email"],
         online: json["online"],
+        image: json["image"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -29,5 +32,6 @@ class User {
         "name": name,
         "email": email,
         "online": online,
+        "image": image
     };
 }

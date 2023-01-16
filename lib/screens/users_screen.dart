@@ -1,4 +1,5 @@
 import 'package:chat_app/screens/screens.dart';
+import 'package:chat_app/widgets/widgets.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -111,9 +112,7 @@ class _UsersScreenState extends State<UsersScreen> {
       leading: user.online 
       ? Stack(
         children: [
-          CircleAvatar(
-            child: Text(user.name.substring(0,2)),
-          ),
+          UserImage(user: user),
           const Positioned(
             top: 0,
             left: 0,
@@ -124,9 +123,7 @@ class _UsersScreenState extends State<UsersScreen> {
           ),
         ],
       )
-      : CircleAvatar(
-        child: Text(user.name.substring(0,2)),
-      ),
+      : UserImage(user: user),
       onTap: () {
         final chatService = Provider.of<ChatService>(context, listen: false);
         chatService.userTo = user;
@@ -158,9 +155,7 @@ class TopBarUserChats extends StatelessWidget {
             fontWeight: FontWeight.w700
           ),
         ),
-        CircleAvatar(
-          child: Text(authService.user.name.substring(0,2)),
-        )
+        UserImage(user: authService.user)
       ],
     );
   }
