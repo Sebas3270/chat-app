@@ -155,7 +155,15 @@ class TopBarUserChats extends StatelessWidget {
             fontWeight: FontWeight.w700
           ),
         ),
-        UserImage(user: authService.user)
+        UserImage(
+          user: authService.user,
+          onTapFunction: () {
+            showModalBottomSheet(
+              context: context, 
+              builder: (context) => ProfilePictureSheet( user: authService.user ),
+            );
+          },  
+        )
       ],
     );
   }

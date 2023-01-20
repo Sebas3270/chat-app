@@ -43,7 +43,8 @@ class ChatAppTheme extends ChangeNotifier{
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
       titleTextStyle: TextStyle(
-        color: Colors.black
+        color: Colors.black,
+        fontFamily: 'DmSans'
       ),
       iconTheme: IconThemeData(
         color: Colors.black54
@@ -67,7 +68,8 @@ class ChatAppTheme extends ChangeNotifier{
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 29, 29, 29),
       titleTextStyle: TextStyle(
-        color: Colors.white
+        color: Colors.white,
+        fontFamily: 'DmSans',
       ),
       iconTheme: IconThemeData(
         color: Colors.white54

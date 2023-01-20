@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:chat_app/models/models.dart';
 import 'package:chat_app/services/services.dart';
 import 'package:chat_app/theme/theme.dart';
 import 'package:chat_app/widgets/widgets.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +30,7 @@ class ProfileScreen extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               value: appTheme.isDarkMode, 
               onChanged: (value) => appTheme.isDarkMode = value,
+              activeColor: Colors.blue[600],
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -132,7 +135,15 @@ class TopBarProfile extends StatelessWidget {
             fontWeight: FontWeight.w700
           ),
         ),
-        UserImage(user: authService.user)
+        UserImage(
+          user: authService.user,
+          onTapFunction: () {
+            showModalBottomSheet(
+              context: context, 
+              builder: (context) => ProfilePictureSheet( user: authService.user ),
+            );
+          },
+        )
       ],
     );
   }
