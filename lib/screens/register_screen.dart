@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app/screens/screens.dart';
 import 'package:chat_app/services/services.dart';
 import 'package:chat_app/widgets/widgets.dart';
@@ -31,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: Platform.isIOS ? const EdgeInsets.all(30.0) : const EdgeInsets.symmetric(horizontal: 30.0, vertical: 55),
               child: Column(
                 children: [
 

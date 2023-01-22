@@ -54,6 +54,19 @@ class ChatAppTheme extends ChangeNotifier{
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
     ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(fontWeight: FontWeight.w400, color:Colors.grey[600]),
+      prefixIconColor: Colors.grey[350],
+      enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Color.fromARGB(255, 215, 215, 215), width: 2.0),
+          borderRadius: BorderRadius.circular(10.0),
+      ),
+      focusedBorder:OutlineInputBorder(
+          borderSide: const BorderSide(color: Color.fromARGB(255, 215, 215, 215), width: 2.0),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+    )
   );
 
   Color primaryBlackColor = Colors.black;
@@ -81,6 +94,19 @@ class ChatAppTheme extends ChangeNotifier{
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white38
     ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      border: InputBorder.none,
+      fillColor: const Color.fromARGB(255, 56, 56, 56),
+      filled: true,
+      labelStyle: TextStyle(fontWeight: FontWeight.w400, color:Color.fromARGB(255, 170, 170, 170)),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+      ),
+      focusedBorder:OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+    )
   );
 
 }

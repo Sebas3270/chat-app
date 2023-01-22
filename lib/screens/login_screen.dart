@@ -37,7 +37,7 @@ class _LogInScreenState extends State<LogInScreen> {
             ),
       
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.all(30.0),
               child: Column(
                 children: [
       
@@ -63,7 +63,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
       
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
       
                   ElevatedButton(

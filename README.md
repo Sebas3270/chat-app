@@ -4,7 +4,7 @@ A new Flutter app to improve my current sockets knowledge, this app allows you s
 
 ![Chat App Cover 1](https://user-images.githubusercontent.com/88170325/213936240-1a1dd722-a20a-4736-a620-c8532e9c98f3.jpeg)
 
-![Chat App Cover 2](https://user-images.githubusercontent.com/88170325/213936264-3f9fa32c-307e-491e-b9fe-927c7868211e.jpeg)
+![Chat App Cover 2](https://user-images.githubusercontent.com/88170325/213944594-485af03d-7c8a-4df4-be64-a46c1a2d24b9.jpeg)
 
 ## Installation
 

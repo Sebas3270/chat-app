@@ -7,7 +7,7 @@ class LogInInput extends StatelessWidget {
   IconData icon;
   bool isPassword;
   TextEditingController txtController;
-  TextInputType? inputType;
+  TextInputType inputType;
 
   LogInInput({
     Key? key,
@@ -16,7 +16,7 @@ class LogInInput extends StatelessWidget {
     required this.icon,
     required this.isPassword,
     required this.txtController,
-    this.inputType,
+    this.inputType = TextInputType.text,
   }) : super(key: key);
 
   @override
@@ -24,23 +24,23 @@ class LogInInput extends StatelessWidget {
     return TextField(
       controller: txtController,
       obscureText: isPassword,
-      keyboardType: inputType ?? TextInputType.text,
+      keyboardType: inputType,
       cursorColor: Colors.grey[500],
       style: const TextStyle(
         fontWeight: FontWeight.w700
       ),
       decoration: InputDecoration(
-        label: Text(label, style: TextStyle(fontWeight: FontWeight.w400, color:Colors.grey[600]),),
+        label: Text(label),
         // hintText: 'example@gmail.com',
         prefixIcon: Icon(icon, color: Colors.grey[350],),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromARGB(255, 215, 215, 215), width: 2.0),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        focusedBorder:OutlineInputBorder(
-          borderSide: const BorderSide(color: Color.fromARGB(255, 215, 215, 215), width: 2.0),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
+        // enabledBorder: OutlineInputBorder(
+        //   borderSide: const BorderSide(color: Color.fromARGB(255, 215, 215, 215), width: 2.0),
+        //   borderRadius: BorderRadius.circular(10.0),
+        // ),
+        // focusedBorder:OutlineInputBorder(
+        //   borderSide: const BorderSide(color: Color.fromARGB(255, 215, 215, 215), width: 2.0),
+        //   borderRadius: BorderRadius.circular(10.0),
+        // ),
       ),
     );
   }
